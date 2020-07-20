@@ -1,11 +1,11 @@
 package de.cas.mse.exercise;
 
 public class Hangman {
-    private static final char UNGUESSED_LETTER = '-';
+    private static final char UNGUESSED_SYMBOL = '-';
 
     private final char[] wordToGuessCharrArr;
-    private final int wordLength;
     private final boolean[] wordGuessMask;
+    private final int wordLength;
 
     public Hangman(String wordToGuess) {
         this.wordToGuessCharrArr = wordToGuess.toCharArray();
@@ -13,22 +13,17 @@ public class Hangman {
         this.wordGuessMask = new boolean[wordLength];
     }
 
-    public String guessLetter(char letter) {
+    public String guessLetter(char inputLetter) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < wordLength; i++) {
-            wordGuessMask[i] = correctGuessForIndex(i, letter);
+            wordGuessMask[i] = isCorrectGuessForIndex(i, inputLetter);
             if (wordGuessMask[i]) {
                 sb.append(wordToGuessCharrArr[i]);
             } else {
-                sb.append(UNGUESSED_LETTER);
+                sb.append(UNGUESSED_SYMBOL);
             }
         }
         return sb.toString();
-    }
-
-    private boolean correctGuessForIndex(int idx, char inputLetter) {
-        return wordGuessMask[idx]
-                || Character.toLowerCase(wordToGuessCharrArr[idx]) == Character.toLowerCase(inputLetter);
     }
 
     public boolean wasWordGuessed() {
@@ -38,5 +33,10 @@ public class Hangman {
             }
         }
         return true;
+    }
+    
+    private boolean isCorrectGuessForIndex(int idx, char inputLetter) {
+    	return wordGuessMask[idx]
+    			|| Character.toLowerCase(wordToGuessCharrArr[idx]) == Character.toLowerCase(inputLetter);
     }
 }
